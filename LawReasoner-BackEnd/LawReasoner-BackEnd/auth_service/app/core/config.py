@@ -16,8 +16,9 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     # API 接口前缀，用于路由分组和文档生成
 
-    SECRET_KEY: str = secrets.token_urlsafe(32)
-    # 安全密钥（默认生成 32 字节随机字符串）
+    # 简化密钥，确保两个服务使用完全相同的字符串
+    SECRET_KEY: str = "simple-shared-secret-key-123456"
+    # 安全密钥（静态密钥，用于多服务共享）
     # 用途：
     #   - JWT 令牌签名
     #   - 敏感数据加密
@@ -52,10 +53,10 @@ class Settings(BaseSettings):
         raise ValueError(v)
 
     # >>>>>>>>>>>>>>> 数据库配置 <<<<<<<<<<<<<<<<
-    SQLITE_DATABASE_URI: str = "sqlite:///./auth_service.db"
+    SQLITE_DATABASE_URI: str = "sqlite:///../common_db/shared_db.db"
     # SQLite 数据库连接字符串
     # 格式说明：sqlite:///<相对路径>
-    # TODO：生产环境应替换为 PostgreSQL/MySQL 等数据库
+    # 使用共享数据库
     
     # >>>>>>>>>>>>>>> 密码哈希配置 <<<<<<<<<<<<<<<<
     PASSWORD_HASHING_ALGORITHM: str = "bcrypt"

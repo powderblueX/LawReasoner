@@ -5,6 +5,11 @@ import uvicorn
 from app.api.routes import api_router # 主路由文件
 from app.core.config import settings # 系统配置
 
+# 调试信息
+print("===== API网关启动 =====")
+print(f"认证服务URL: {settings.AUTH_SERVICE_URL}")
+print(f"CORS配置: {settings.BACKEND_CORS_ORIGINS}")
+
 # ------------------------- FastAPI应用初始化 -------------------------
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -37,6 +42,8 @@ CORS策略说明：
 
 # ------------------------- 路由注册 -------------------------
 app.include_router(api_router, prefix=settings.API_V1_STR)
+print(f"API路由注册完成，前缀: {settings.API_V1_STR}")
+print(f"认证转发路由: {settings.API_V1_STR}/auth/*")
 """
 路由挂载说明：
 - api_router: 来自routes.py的所有路由
@@ -47,6 +54,7 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 
 # ------------------------- 开发服务器启动 -------------------------
 if __name__ == "__main__":
+    print(f"启动API网关，监听端口: 8000")
     uvicorn.run(
         "main:app",     # 模块路径:FastAPI实例（main.py中的app）
         host="0.0.0.0", # 监听所有网络接口
