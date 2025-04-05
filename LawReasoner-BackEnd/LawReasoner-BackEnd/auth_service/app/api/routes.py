@@ -1,0 +1,238 @@
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
+from datetime import timedelta, datetime
+from sqlalchemy.orm import Session
+
+from app.api import deps # 依赖注入模块
+from app.core import security # 安全相关工具
+from app.core.config import settings # 配置管理
+from app.schemas.token import Token # Token响应模型
+from app.schemas.user import User, UserCreate, UserUpdate, EmailVerification, UserLogin, PasswordReset # 用户模型
+from app.models.user import User as UserModel # 数据库用户模型
+from app.crud.user import (
+    create_user_with_verification,
+    get_user_by_email,
+    authenticate_user,
+    reset_password
+)
+from app.utils.email import send_verification_code
+
+# 创建API路由实例
+api_router = APIRouter()
+
+
+@api_router.post("/login", 
+                 summary="用户登录",
+                 description="通过用户名或邮箱和密码获取访问令牌")
+async def login_for_access_token(
+    form_data: UserLogin, # 使用自定义登录模型
+    db: Session = Depends(deps.get_db)
+):
+    """用户登录获取令牌
+    流程：
+      1. 验证用户名/邮箱和密码
+      2. 生成JWT访问令牌
+      3. 返回令牌给客户端
+    """
+    # 调用CRUD层的认证函数
+    user = authenticate_user(db, form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="用户名/邮箱或密码不正确",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    # 生成令牌过期时间（从配置读取）
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    # 生成JWT令牌（subject通常为用户唯一标识）
+    access_token = security.create_access_token(
+        subject=user.id, expires_delta=access_token_expires
+    )
+    
+    # 确定用户角色
+    role = "admin" if user.is_superuser else "user"
+    
+    # 计算令牌过期时间
+    expire = (datetime.utcnow() + access_token_expires).timestamp()
+    
+    # 返回标准格式响应
+    return {
+        "code": 200,
+        "message": "登录成功",
+        "data": {
+            "token": access_token,
+            "expire": expire,
+            "role": role,
+            "username": user.username
+        }
+    }
+
+
+@api_router.post("/oauth-login", 
+                 summary="OAuth2表单登录",
+                 description="支持OAuth2标准表单登录")
+async def oauth_login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(deps.get_db)
+):
+    """OAuth2兼容的登录端点（用于第三方客户端）"""
+    # 调用CRUD层的认证函数
+    user = authenticate_user(db, form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="用户名/邮箱或密码不正确",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = security.create_access_token(
+        subject=user.id, expires_delta=access_token_expires
+    )
+    
+    # 确定用户角色
+    role = "admin" if user.is_superuser else "user"
+    
+    # 计算令牌过期时间
+    expire = (datetime.utcnow() + access_token_expires).timestamp()
+    
+    # 返回标准格式响应
+    return {
+        "code": 200,
+        "message": "登录成功",
+        "data": {
+            "token": access_token,
+            "expire": expire,
+            "role": role,
+            "username": user.username
+        }
+    }
+
+
+@api_router.post("/register/send-code",
+                 summary="发送注册验证码",
+                 description="向指定邮箱发送注册验证码")
+async def send_register_code(
+    email_data: EmailVerification,
+    db: Session = Depends(deps.get_db)
+):
+    """发送注册验证码
+    流程：
+      1. 检查邮箱是否已注册
+      2. 生成验证码并发送
+    """
+    # 检查邮箱是否已注册
+    user = get_user_by_email(db, email=email_data.email)
+    if user:
+        raise HTTPException(
+            status_code=400,
+            detail="该邮箱已被注册"
+        )
+    
+    # 发送验证码
+    success = send_verification_code(email_data.email, "register")
+    if not success:
+        raise HTTPException(
+            status_code=500,
+            detail="验证码发送失败，请稍后重试"
+        )
+    
+    return {"message": "验证码已发送至邮箱，有效期为10分钟"}
+
+
+@api_router.post("/register", 
+                 response_model=User,
+                 summary="用户注册",
+                 description="通过邮箱验证码注册新用户")
+async def register_user(
+    user_in: UserCreate,
+    db: Session = Depends(deps.get_db)
+):
+    """用户注册（带验证码）
+    流程：
+      1. 检查邮箱是否已注册
+      2. 验证邮箱验证码
+      3. 创建新用户
+    """
+    # 检查邮箱是否已注册
+    existing_user = get_user_by_email(db, email=user_in.email)
+    if existing_user:
+        raise HTTPException(
+            status_code=400,
+            detail="该邮箱已被注册"
+        )
+    
+    # 创建用户（包含验证码验证）
+    user = create_user_with_verification(db, user_in)
+    if not user:
+        raise HTTPException(
+            status_code=400,
+            detail="验证码无效或已过期"
+        )
+    
+    return user
+
+
+@api_router.post("/reset-password/send-code",
+                summary="发送密码重置验证码",
+                description="向指定邮箱发送密码重置验证码")
+async def send_reset_password_code(
+    email_data: EmailVerification,
+    db: Session = Depends(deps.get_db)
+):
+    """发送密码重置验证码
+    流程：
+      1. 检查邮箱是否存在
+      2. 生成验证码并发送
+    """
+    # 检查邮箱是否存在
+    user = get_user_by_email(db, email=email_data.email)
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="该邮箱未注册"
+        )
+    
+    # 发送验证码
+    success = send_verification_code(email_data.email, "reset_password")
+    if not success:
+        raise HTTPException(
+            status_code=500,
+            detail="验证码发送失败，请稍后重试"
+        )
+    
+    return {"message": "验证码已发送至邮箱，有效期为10分钟"}
+
+
+@api_router.post("/reset-password",
+                summary="重置密码",
+                description="通过邮箱验证码重置密码")
+async def reset_user_password(
+    reset_data: PasswordReset,
+    db: Session = Depends(deps.get_db)
+):
+    """重置用户密码
+    流程：
+      1. 验证邮箱验证码
+      2. 更新用户密码
+    """
+    # 调用CRUD层的密码重置函数
+    user = reset_password(db, reset_data)
+    if not user:
+        raise HTTPException(
+            status_code=400,
+            detail="验证码无效或已过期，或邮箱不存在"
+        )
+    
+    return {"message": "密码重置成功，请使用新密码登录"}
+
+
+@api_router.get("/users/me", response_model=User)
+async def read_users_me(
+    current_user: UserModel = Depends(deps.get_current_user)
+):
+    """获取当前用户信息
+    安全逻辑：
+      - 通过JWT令牌自动验证用户身份
+      - 仅返回已登录用户自身信息
+    """
+    return current_user 
