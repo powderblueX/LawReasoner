@@ -56,6 +56,25 @@ const goToProfile = () => {
     </div>
 
     <div class="welcome-content">
+      <!-- 系统功能概述 -->
+      <section class="welcome-section">
+        <h2 class="section-title">系统功能概述</h2>
+        <div class="section-content">
+          <div class="card">
+            <h3>智能法律咨询</h3>
+            <p>基于大语言模型的民事法律智能咨询系统，分析案情并给出合理判决结果，提供多轮对话，支持会话管理。</p>
+          </div>
+          <div class="card">
+            <h3>《民法典》知识库</h3>
+            <p>提供完整的《民法典》条文查询与浏览，按章节分类展示，支持关键词搜索，快速定位相关法条。</p>
+          </div>
+          <div class="card">
+            <h3>智能合同生成</h3>
+            <p>基于用户对话描述，智能推荐合适的合同模板，支持多种常用合同类型，自动填写合同内容，生成专业法律文书。</p>
+          </div>
+        </div>
+      </section>
+
       <!-- 法律领域痛点分析 -->
       <section class="welcome-section">
         <h2 class="section-title">法律领域痛点分析</h2>
@@ -80,8 +99,8 @@ const goToProfile = () => {
         <h2 class="section-title">技术突破机遇</h2>
         <div class="section-content">
           <div class="card">
-            <h3>大模型参数规模突破</h3>
-            <p>1750亿参数的GPT-3展现法律推理潜力，为智能法律系统提供技术基础。</p>
+            <h3>deepseek-r1 1.5B 模型</h3>
+            <p>deepseek-r1 1.5B 模型展现法律推理潜力，为智能法律系统提供技术基础。</p>
           </div>
           <div class="card">
             <h3>检索增强生成（RAG）技术成熟</h3>
@@ -89,14 +108,14 @@ const goToProfile = () => {
           </div>
           <div class="card">
             <h3>政策支持</h3>
-            <p>最高法《智慧法院建设规划》明确提出AI辅助审判要求。</p>
+            <p>最高法《智慧法院建设规划》明确提出AI辅助审判要求：“构建面向各类用户的人工智能感知交互体系和以知识为中心的人工智能辅助决策体系”。</p>
           </div>
         </div>
       </section>
 
       <!-- 项目独特性 -->
       <section class="welcome-section">
-        <h2 class="section-title">"法理智推"的独特性</h2>
+        <h2 class="section-title">"法理智推"中智能法律咨询的独特性</h2>
         <div class="section-content">
           <div class="card">
             <h3>首个专注《民法典》的智能推理系统</h3>
@@ -117,6 +136,12 @@ const goToProfile = () => {
     <!-- 页脚 -->
     <div class="welcome-footer">
       <p>法理智推 —— 让法律更智能，让正义更高效</p>
+      <div class="author-info">
+        <h3>开发者信息</h3>
+        <p>姓名：powderblueX、zhu mingcan</p>
+        <p>邮箱：minshijibai@163.com</p>
+        <p>地址：上海市嘉定区曹安公路4800号</p>
+      </div>
     </div>
   </div>
 </template>
@@ -251,6 +276,23 @@ const goToProfile = () => {
   color: #fff;
   border-radius: 10px;
   animation: fadeIn 1s ease-in-out;
+}
+
+.author-info {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.author-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.author-info p {
+  font-size: 0.9rem;
+  margin: 0.3rem 0;
+  color: #e0e0e0;
 }
 
 @keyframes fadeIn {

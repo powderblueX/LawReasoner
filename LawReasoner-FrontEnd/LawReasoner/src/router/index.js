@@ -60,20 +60,6 @@ const router = createRouter({
                 component: () => import("@/views/chatviews/chatviews/ChatPage.vue"),
                 meta: { title: "法理智推对话页面" }, 
               },
-              // 历史会话管理页面
-              {
-                path: "history",
-                name: "history",
-                component: () => import("@/views/chatviews/historyviews/HistoryPage.vue"),
-                meta: { title: "法理智推历史会话" }, 
-              },
-              // 案例社区页面
-              {
-                path: "community",
-                name: "community",
-                component: () => import("@/views/chatviews/communityviews/CommunityPage.vue"),
-                meta: { title: "法理智推案例社区" }, 
-              },
               // 法律知识库页面
               {
                 path: "knowledge",
@@ -81,39 +67,8 @@ const router = createRouter({
                 component: () => import("@/views/chatviews/knowledgeviews/KnowledgePage.vue"),
                 meta: { title: "法理智推法律知识库" }, 
               },
-              // // 法律文书生成页面
-              // {
-              //   path: "/document",
-              //   name: "document",
-              //   component: () => import("@/views/chatviews/documentviews/DocumentPage.vue"),
-              //   meta: { title: "法理智推法律文书生成" }, 
-              // },
             ]
           },
-
-          // // 法律知识库页面
-          // {
-          //   path: "/knowledge",
-          //   name: "knowledge",
-          //   component: () => import("@/views/knowledgeviews/KnowledgePage.vue"),
-          //   meta: { title: "法理智推法律知识库" }, 
-          // },
-
-          // // 历史会话管理页面
-          // {
-          //   path: "/history",
-          //   name: "history",
-          //   component: () => import("@/views/historyviews/HistoryPage.vue"),
-          //   meta: { title: "法理智推历史会话" }, 
-          // },
-
-          // // 案例社区页面
-          // {
-          //   path: "/community",
-          //   name: "community",
-          //   component: () => import("@/views/communityviews/CommunityPage.vue"),
-          //   meta: { title: "法理智推案例社区" }, 
-          // },
 
           // 个人中心页面
           {

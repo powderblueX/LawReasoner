@@ -106,7 +106,7 @@ const viewAllTemplates = () => {
         <el-icon class="description-icon"><Document /></el-icon>
         <div class="description-content">
           <h3>智能合同生成</h3>
-          <p>基于您的需求描述，智能推荐合适的合同模板，快速生成专业法律文书</p>
+          <p>基于您的对话描述，智能推荐合适的合同模板，并智能填写合同内容，快速生成专业法律文书</p>
         </div>
       </div>
       <div class="description-card">
@@ -133,35 +133,63 @@ const viewAllTemplates = () => {
             :key="index"
             :class="['message', message.type]"
           >
-            <div class="message-content">
-              {{ message.content }}
-              <!-- 在系统消息中显示推荐模板 -->
-              <div v-if="message.templates" class="recommended-templates-inline">
-                <div class="template-buttons">
-                  <el-button
-                    v-for="template in message.templates"
-                    :key="template.id"
-                    type="primary"
-                    plain
-                    class="template-button"
-                    @click="viewTemplate(template)"
-                  >
-                    <el-icon><Document /></el-icon>
-                    {{ template.name }}
-                  </el-button>
+            <div v-if="message.type === 'user'" class="message-row user-message-row">
+              <div class="avatar-container">
+                <img class="chat-avatar user-avatar" src="@/assets/images/UserAvatar.png" alt="avatar">
+              </div>
+              <div class="message-content-wrapper">
+                <div class="message-content user-message">
+                  {{ message.content }}
+                  <div class="message-time">
+                    {{ new Date(message.timestamp).toLocaleTimeString() }}
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="message-time">
-              {{ new Date(message.timestamp).toLocaleTimeString() }}
+            <div v-else class="message-row">
+              <div class="avatar-container">
+                <img class="chat-avatar" src="@/assets/images/LawReasoner.png" alt="avatar">
+              </div>
+              <div class="message-content-wrapper">
+                <div class="message-content system-message">
+                  {{ message.content }}
+                  <!-- 在系统消息中显示推荐模板 -->
+                  <div v-if="message.templates" class="recommended-templates-inline">
+                    <div class="template-buttons">
+                      <el-button
+                        v-for="template in message.templates"
+                        :key="template.id"
+                        type="primary"
+                        plain
+                        class="template-button"
+                        @click="viewTemplate(template)"
+                      >
+                        <el-icon><Document /></el-icon>
+                        {{ template.name }}
+                      </el-button>
+                    </div>
+                  </div>
+                  <div class="message-time">
+                    {{ new Date(message.timestamp).toLocaleTimeString() }}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           
-          <div v-if="isLoading" class="message system">
-            <div class="message-content">
-              <div class="loading-content">
-                <el-icon class="loading-icon"><Loading /></el-icon>
-                正在为您推荐合适的合同模板...
+          <!-- 加载中的消息 -->
+          <div v-if="isLoading" class="message">
+            <div class="message-row">
+              <div class="avatar-container">
+                <img class="chat-avatar" src="@/assets/images/LawReasoner.png" alt="avatar">
+              </div>
+              <div class="message-content-wrapper">
+                <div class="message-content system-message">
+                  <div class="loading-content">
+                    <el-icon class="loading-icon"><Loading /></el-icon>
+                    正在为您推荐合适的合同模板...
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -269,39 +297,80 @@ const viewAllTemplates = () => {
   border-radius: 8px;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
   margin-bottom: 20px;
+  overflow: hidden;
 }
 
 .messages {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .message {
   margin-bottom: 20px;
-  max-width: 80%;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
-.message.user {
+.message-row {
+  display: flex;
+  width: 100%;
+  padding: 0;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.user-message-row {
+  flex-direction: row-reverse !important;
+}
+
+.message-content-wrapper {
+  flex: 0 1 auto;
+  max-width: 80%;
+  min-width: 50px;
+}
+
+.user-message {
+  background-color: #ecf5ff;
+  color: #409eff;
+  margin-right: 10px;
   margin-left: auto;
+}
+
+.system-message {
+  background-color: #f0f2f5;
+  margin-left: 10px;
+  margin-right: auto;
 }
 
 .message-content {
   padding: 12px 16px;
-  border-radius: 8px;
-  background-color: #f0f2f5;
+  border-radius: 10px;
+  position: relative;
+  word-break: break-word;
 }
 
-.message.user .message-content {
-  background-color: #ecf5ff;
-  color: #409eff;
+.avatar-container {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.message-time {
-  font-size: 12px;
-  color: #909399;
-  margin-top: 4px;
-  text-align: right;
+.chat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.user-avatar {
+  border: 3px solid #ecf5ff;
+  box-shadow: 0 0 10px rgba(236, 245, 255, 0.5);
 }
 
 .input-section {
@@ -326,6 +395,8 @@ const viewAllTemplates = () => {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .template-button {
@@ -333,6 +404,7 @@ const viewAllTemplates = () => {
   align-items: center;
   gap: 5px;
   transition: all 0.3s;
+  margin-bottom: 5px;
 }
 
 .template-button:hover {
@@ -516,6 +588,13 @@ const viewAllTemplates = () => {
   font-size: 16px;
   font-family: KaiTi;
   line-height: 1.5;
+}
+
+.message-time {
+  font-size: 12px;
+  color: #909399;
+  margin-top: 4px;
+  text-align: right;
 }
 
 @media (max-width: 768px) {
