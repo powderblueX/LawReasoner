@@ -1,132 +1,347 @@
-from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks, Body
+from typing import List
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
-from typing import List, Any
-import httpx
+import logging
+from datetime import datetime
 
-from app.api import deps
-from app.core.config import settings
 from app.db.session import get_db
-from app.models.case import Case as CaseModel
-from app.schemas.case import Case, CaseCreate, CaseUpdate, CaseAnalysisRequest, AnalysisResult
-from app.services.reasoning import analyze_case
+from app.api.deps import get_current_user_id
+from app.schemas.chat import ChatRequest, ChatSession, ChatMessage, ChatHistory, ChatSessionList, ApiResponse, UpdateTitleRequest
+from app.db.crud import (
+    create_chat_session, get_chat_session, get_user_chat_sessions,
+    create_chat_message, get_chat_messages, update_chat_message_response,
+    update_chat_session_title
+)
+from app.services.llm_service import llm_service
 
-api_router = APIRouter()
+# 创建路由
+router = APIRouter()
 
+# 配置日志
+logger = logging.getLogger("chat_api")
+logger.setLevel(logging.INFO)
 
-@api_router.post("/cases/", response_model=Case)
-def create_case(
-    case_in: CaseCreate,
-    current_user_id: int = Body(...),
-    db: Session = Depends(get_db)
-):
-    """创建新案例"""
-    db_case = CaseModel(
-        **case_in.dict(),
-        created_by=current_user_id
-    )
-    db.add(db_case)
-    db.commit()
-    db.refresh(db_case)
-    return db_case
+# 后台任务：更新消息的回复
+async def process_model_response(db: Session, message_id: int, user_input: str):
+    """处理模型响应并更新数据库"""
+    try:
+        # 调用大模型生成回复
+        response = await llm_service.generate_response(user_input)
+        
+        # 更新数据库中的消息响应
+        update_chat_message_response(db, message_id, response)
+        logger.info(f"已更新消息ID {message_id} 的响应")
+    except Exception as e:
+        logger.error(f"处理模型响应时发生错误: {str(e)}")
+        # 更新为错误消息
+        error_message = f"生成回复时发生错误: {str(e)}"
+        update_chat_message_response(db, message_id, error_message)
 
-
-@api_router.get("/cases/", response_model=List[Case])
-def read_cases(
-    skip: int = 0,
-    limit: int = 100,
-    db: Session = Depends(get_db)
-):
-    """获取案例列表"""
-    cases = db.query(CaseModel).offset(skip).limit(limit).all()
-    return cases
-
-
-@api_router.get("/cases/{case_id}", response_model=Case)
-def read_case(
-    case_id: int,
-    db: Session = Depends(get_db)
-):
-    """获取单个案例详情"""
-    db_case = db.query(CaseModel).filter(CaseModel.id == case_id).first()
-    if db_case is None:
-        raise HTTPException(status_code=404, detail="案例不存在")
-    return db_case
-
-
-@api_router.put("/cases/{case_id}", response_model=Case)
-def update_case(
-    case_id: int,
-    case_in: CaseUpdate,
-    db: Session = Depends(get_db)
-):
-    """更新案例"""
-    db_case = db.query(CaseModel).filter(CaseModel.id == case_id).first()
-    if db_case is None:
-        raise HTTPException(status_code=404, detail="案例不存在")
-    
-    update_data = case_in.dict(exclude_unset=True)
-    for field, value in update_data.items():
-        setattr(db_case, field, value)
-    
-    db.add(db_case)
-    db.commit()
-    db.refresh(db_case)
-    return db_case
-
-
-@api_router.delete("/cases/{case_id}", response_model=dict)
-def delete_case(
-    case_id: int,
-    db: Session = Depends(get_db)
-):
-    """删除案例"""
-    db_case = db.query(CaseModel).filter(CaseModel.id == case_id).first()
-    if db_case is None:
-        raise HTTPException(status_code=404, detail="案例不存在")
-    
-    db.delete(db_case)
-    db.commit()
-    return {"message": "案例已成功删除"}
-
-
-@api_router.post("/cases/analyze", response_model=dict)
-async def analyze_case_endpoint(
-    analysis_request: CaseAnalysisRequest,
+@router.post("/chat", status_code=status.HTTP_200_OK)
+async def send_message(
+    request: ChatRequest,
     background_tasks: BackgroundTasks,
+    current_user_id: int = Depends(get_current_user_id),
     db: Session = Depends(get_db)
 ):
-    """分析案例（异步）"""
-    db_case = db.query(CaseModel).filter(CaseModel.id == analysis_request.case_id).first()
-    if db_case is None:
-        raise HTTPException(status_code=404, detail="案例不存在")
+    """
+    发送消息给大模型并获取响应
     
-    # 更新案例状态为分析中
-    db_case.status = "analyzing"
-    db.add(db_case)
-    db.commit()
+    将消息存储到数据库，同时在后台处理模型响应
+    """
+    logger.info(f"用户 {current_user_id} 发送消息: {request.content[:50]}...")
     
-    # 在后台任务中执行分析
-    background_tasks.add_task(
-        analyze_case,
-        db=db,
-        case_id=analysis_request.case_id,
-        analysis_types=analysis_request.analysis_types
-    )
+    try:
+        # 创建消息记录，不含响应
+        db_message = create_chat_message(
+            db=db,
+            user_id=current_user_id,
+            content=request.content,
+            session_id=request.session_id
+        )
+        
+        # 获取会话ID（可能是新创建的）
+        session_id = db_message.session_id
+        logger.info(f"已创建消息记录，ID: {db_message.id}, 会话ID: {session_id}")
+        
+        # 尝试获取模型响应
+        try:
+            # 同步获取响应，而不是在后台任务中处理
+            logger.info("开始请求LLM生成回复...")
+            response = await llm_service.generate_response(request.content)
+            logger.info(f"成功获取模型回复，长度: {len(response)}")
+            
+            # 记录部分响应内容以便调试
+            logger.info(f"模型回复内容片段: {response[:100]}...")
+            
+            # 更新消息响应
+            update_chat_message_response(db, db_message.id, response)
+            logger.info(f"已更新消息ID {db_message.id} 的响应")
+            
+            # 返回标准格式的成功响应
+            response_obj = {
+                "code": 200,
+                "message": "成功获取回复",
+                "data": {
+                    "response": response,
+                    "session_id": session_id  # 确保此字段一定存在
+                }
+            }
+            # 打印完整的响应对象，帮助调试
+            logger.info(f"返回成功响应，包含session_id: {session_id}")
+            logger.info(f"返回成功响应，结构: {response_obj}")
+            return response_obj
+            
+        except Exception as model_error:
+            # 模型调用错误，记录日志并返回错误信息
+            error_message = f"模型生成失败: {str(model_error)}"
+            logger.error(error_message, exc_info=True)
+            
+            # 仍然更新消息记录，但存储错误信息
+            error_response = f"[错误] {error_message}"
+            update_chat_message_response(db, db_message.id, error_response)
+            logger.info(f"已更新消息ID {db_message.id} 的错误响应")
+            
+            # 返回标准格式的错误响应
+            error_response = {
+                "code": 500,
+                "message": "模型生成失败",
+                "data": {
+                    "response": "很抱歉，模型暂时无法处理您的请求，请稍后再试。",
+                    "session_id": session_id,
+                    "detail": str(model_error)
+                }
+            }
+            logger.info(f"返回错误响应，结构: {error_response}")
+            return error_response
     
-    return {
-        "message": "案例分析已开始，请稍后查看结果",
-        "case_id": analysis_request.case_id
-    }
+    except Exception as e:
+        logger.error(f"处理消息时发生错误: {str(e)}", exc_info=True)
+        
+        # 返回标准格式的错误响应
+        return {
+            "code": 500,
+            "message": f"处理消息失败: {str(e)}",
+            "data": {
+                "response": "服务器处理请求时发生错误，请稍后再试。",
+                "detail": str(e)
+            }
+        }
 
-
-@api_router.get("/cases/{case_id}/analysis", response_model=List[AnalysisResult])
-def get_case_analysis_results(
-    case_id: int,
+@router.get("/sessions", response_model=ChatSessionList)
+async def get_sessions(
+    current_user_id: int = Depends(get_current_user_id),
     db: Session = Depends(get_db)
 ):
-    """获取案例分析结果"""
-    db_case = db.query(CaseModel).filter(CaseModel.id == case_id).first()
-    if db_case is None:
-        raise HTTPException(status_code=404, detail="案例不存在")
+    """获取用户的会话列表"""
+    logger.info(f"用户 {current_user_id} 请求会话列表")
     
-    return db_case.analysis_results 
+    try:
+        # 获取会话列表
+        db_sessions = get_user_chat_sessions(db, current_user_id)
+        
+        # 转换为响应格式
+        sessions = []
+        for session in db_sessions:
+            # 获取最后一条消息作为预览
+            messages = get_chat_messages(db, session.id)
+            last_message = None
+            if messages:
+                last_message = messages[-1].content[:20] + "..." if len(messages[-1].content) > 20 else messages[-1].content
+            
+            sessions.append(ChatSession(
+                id=session.id,
+                title=session.title,
+                updated_at=session.updated_at,
+                last_message=last_message
+            ))
+        
+        # 直接返回ChatSessionList对象，而不是字典
+        return ChatSessionList(sessions=sessions)
+    
+    except Exception as e:
+        logger.error(f"获取会话列表时发生错误: {str(e)}")
+        # 同样返回ChatSessionList对象
+        return ChatSessionList(
+            code=500,
+            message=f"获取会话列表失败: {str(e)}",
+            sessions=[]  # 始终返回空列表而不是null
+        )
+
+@router.get("/sessions/{session_id}/messages", response_model=ChatHistory)
+async def get_session_messages(
+    session_id: int,
+    current_user_id: int = Depends(get_current_user_id),
+    db: Session = Depends(get_db)
+):
+    """获取会话中的所有消息"""
+    logger.info(f"用户 {current_user_id} 请求会话 {session_id} 的消息")
+    
+    try:
+        # 检查会话是否存在且属于当前用户
+        session = get_chat_session(db, session_id)
+        if not session or session.user_id != current_user_id:
+            # 使用ChatHistory模型确保一致的返回结构
+            return ChatHistory(
+                code=404,
+                message="会话不存在或无权访问",
+                data=None,
+                messages=[]  # 返回空列表而不是null
+            )
+        
+        # 获取会话中的所有消息
+        db_messages = get_chat_messages(db, session_id)
+        
+        # 转换为响应格式
+        messages = [
+            ChatMessage(
+                id=msg.id,
+                content=msg.content,
+                response=msg.response,
+                created_at=msg.created_at
+            )
+            for msg in db_messages
+        ]
+        
+        return ChatHistory(messages=messages)
+    
+    except Exception as e:
+        logger.error(f"获取会话消息时发生错误: {str(e)}")
+        # 使用标准响应格式而不是HTTP异常
+        # 关键：确保返回的结构与ChatHistory模型一致，即使有错误也包含messages字段
+        return ChatHistory(
+            code=500,
+            message=f"获取会话消息失败: {str(e)}",
+            data=None,
+            messages=[]  # 始终返回空列表而不是null
+        )
+
+@router.get("/sessions/{session_id}/delete", response_model=ApiResponse)
+async def delete_session(
+    session_id: int,
+    current_user_id: int = Depends(get_current_user_id),
+    db: Session = Depends(get_db)
+):
+    """删除指定会话及其所有消息"""
+    logger.info(f"用户 {current_user_id} 请求删除会话 {session_id}")
+    
+    try:
+        # 检查会话是否存在且属于当前用户
+        session = get_chat_session(db, session_id)
+        if not session:
+            return ApiResponse(
+                code=404,
+                message="会话不存在"
+            )
+        
+        if session.user_id != current_user_id:
+            return ApiResponse(
+                code=403,
+                message="无权删除此会话"
+            )
+        
+        # 删除会话(级联删除所有消息)
+        db.delete(session)
+        db.commit()
+        
+        return ApiResponse(
+            message="会话已成功删除"
+        )
+    
+    except Exception as e:
+        logger.error(f"删除会话时发生错误: {str(e)}")
+        return ApiResponse(
+            code=500,
+            message=f"删除会话失败: {str(e)}"
+        )
+
+@router.get("/sessions/{session_id}/clear", response_model=ApiResponse)
+async def clear_session_messages(
+    session_id: int,
+    current_user_id: int = Depends(get_current_user_id),
+    db: Session = Depends(get_db)
+):
+    """清空指定会话的所有消息，但保留会话本身"""
+    logger.info(f"用户 {current_user_id} 请求清空会话 {session_id} 的消息")
+    
+    try:
+        # 检查会话是否存在且属于当前用户
+        session = get_chat_session(db, session_id)
+        if not session:
+            return ApiResponse(
+                code=404,
+                message="会话不存在"
+            )
+        
+        if session.user_id != current_user_id:
+            return ApiResponse(
+                code=403,
+                message="无权清空此会话"
+            )
+        
+        # 删除会话中的所有消息
+        for message in session.messages:
+            db.delete(message)
+        
+        # 更新会话标题
+        session.title = "新会话"
+        session.updated_at = datetime.utcnow()
+        
+        db.commit()
+        
+        return ApiResponse(
+            message="会话消息已成功清空"
+        )
+    
+    except Exception as e:
+        logger.error(f"清空会话消息时发生错误: {str(e)}")
+        return ApiResponse(
+            code=500,
+            message=f"清空会话消息失败: {str(e)}"
+        )
+
+@router.post("/sessions/{session_id}/title", response_model=ApiResponse)
+async def update_session_title(
+    session_id: int,
+    request: UpdateTitleRequest,
+    current_user_id: int = Depends(get_current_user_id),
+    db: Session = Depends(get_db)
+):
+    """更新会话标题"""
+    logger.info(f"用户 {current_user_id} 请求更新会话 {session_id} 的标题为 '{request.title}'")
+    
+    try:
+        # 检查会话是否存在且属于当前用户
+        session = get_chat_session(db, session_id)
+        if not session:
+            return ApiResponse(
+                code=404,
+                message="会话不存在"
+            )
+        
+        if session.user_id != current_user_id:
+            return ApiResponse(
+                code=403,
+                message="无权修改此会话"
+            )
+        
+        # 更新标题
+        updated_session = update_chat_session_title(db, session_id, request.title)
+        
+        if updated_session:
+            return ApiResponse(
+                message="会话标题已成功更新"
+            )
+        else:
+            return ApiResponse(
+                code=500,
+                message="更新会话标题失败"
+            )
+    
+    except Exception as e:
+        logger.error(f"更新会话标题时发生错误: {str(e)}")
+        return ApiResponse(
+            code=500,
+            message=f"更新会话标题失败: {str(e)}"
+        )

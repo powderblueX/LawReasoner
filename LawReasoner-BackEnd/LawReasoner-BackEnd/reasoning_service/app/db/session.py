@@ -1,26 +1,10 @@
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from typing import Generator
 
-from app.core.config import settings
+# 导入共享的数据库工具
+from common_db.db_utils import Base, engine, SessionLocal, get_db
 
-# 创建SQLAlchemy引擎
-engine = create_engine(
-    settings.SQLITE_DATABASE_URI, connect_args={"check_same_thread": False}
-)
+# 注意：我们现在直接使用common_db中定义的Base、engine和SessionLocal
+# 这样可以确保所有服务使用相同的数据库连接和模型定义
 
-# 创建本地会话
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# 创建Base类
-Base = declarative_base()
-
-
-def get_db() -> Generator:
-    """获取数据库会话"""
-    try:
-        db = SessionLocal()
-        yield db
-    finally:
-        db.close() 
+# 保留get_db函数的导入，但实际内容来自common_db

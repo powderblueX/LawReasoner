@@ -1,0 +1,13 @@
+CREATE TABLE chat_messages (
+	id INTEGER NOT NULL, 
+	session_id INTEGER, 
+	user_id INTEGER, 
+	content TEXT NOT NULL, 
+	response TEXT, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(session_id) REFERENCES chat_sessions (id)
+);
+CREATE INDEX ix_chat_messages_session_id ON chat_messages (session_id);
+CREATE INDEX ix_chat_messages_id ON chat_messages (id);
+CREATE INDEX ix_chat_messages_user_id ON chat_messages (user_id);

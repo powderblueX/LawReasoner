@@ -100,19 +100,100 @@ function getWithToken(url, success){
         return
     }
 
+    // 添加调试日志
+    console.log(`发送GET请求到: ${url}`);
+
     axios.get(url, {
         headers: header
     }).then(({data}) => {
+        console.log(`接收到GET响应，URL: ${url}, 数据:`, data);
+
+        // 特殊处理会话相关接口
+        if (url.includes('/sessions')) {
+            console.log('会话相关接口返回数据:', data);
+            
+            // 处理会话列表接口
+            if (url.endsWith('/sessions')) {
+                if (data.code === 200) {
+                    console.log('会话列表接口返回成功状态');
+                    
+                    // 判断各种可能的数据结构
+                    if (data.data && data.data.sessions) {
+                        console.log('会话数据在 data.data.sessions 中');
+                        success(data.data.sessions);
+                        return;
+                    } 
+                    else if (data.data && Array.isArray(data.data)) {
+                        console.log('会话数据直接在 data.data 数组中');
+                        success(data.data);
+                        return;
+                    }
+                    else if (data.sessions) {
+                        console.log('会话数据在 data.sessions 中');
+                        success(data.sessions);
+                        return;
+                    }
+                    else if (Array.isArray(data)) {
+                        console.log('会话数据直接是数组');
+                        success(data);
+                        return;
+                    }
+                    // 默认情况，返回整个data
+                    console.log('使用默认数据结构');
+                    success(data.data || data);
+                    return;
+                } else {
+                    // 处理错误
+                    console.warn('会话列表接口返回错误状态:', data.code, data.message);
+                    ElMessage.warning(data.message || '加载会话列表失败');
+                    success({ error: true, message: data.message || '加载会话列表失败' });
+                    return;
+                }
+            }
+            
+            // 处理会话消息接口
+            if (url.includes('/messages')) {
+                console.log('会话消息接口返回');
+                
+                if (data.code === 200) {
+                    if (data.data && data.data.messages) {
+                        console.log('消息数据在 data.data.messages 中');
+                        success(data.data);
+                        return;
+                    } 
+                    else if (data.messages) {
+                        console.log('消息数据在 data.messages 中');
+                        success(data);
+                        return;
+                    }
+                    // 默认情况
+                    success(data.data || data);
+                    return;
+                } else {
+                    console.warn('会话消息接口返回错误状态:', data.code, data.message);
+                    success({ error: true, message: data.message || '加载会话消息失败' });
+                    return;
+                }
+            }
+        }
+
+        // 默认处理
         if(data.code === 200){  // 服务器处理成功
             success(data.data)
         }
         else{   // 服务器处理失败
             console.warn(`请求地址：${url}，状态码：${data.code}，错误信息：${data.message}`)
             ElMessage.warning(data.message)
+            
+            // 返回错误对象，便于前端处理
+            success({ error: true, message: data.message })
         }
     }).catch(err => {  // 连接失败
-        console.warn(err)
+        console.warn(`请求失败: ${url}`, err)
         ElMessage.warning('发生了一些错误，请联系管理员')
+        
+        // 返回错误对象，便于前端处理
+        success({ error: true, message: '网络连接失败' })
     })
 }
 
@@ -126,20 +207,80 @@ function postWithToken(url, data, success){
         return
     }
 
+    console.log(`发送POST请求到: ${url}，携带数据:`, data);
+
     axios.post(url, data, {
         headers: header
-    }).then(({data}) => {
-        if(data.code === 200){  // 服务器处理成功
-            success(data.data)
+    }).then(({data: responseData}) => {
+        console.log(`接收到响应，原始数据:`, responseData);
+
+        // 检查是否有嵌套的data字段
+        let processedData = responseData;
+        
+        // 特殊处理聊天接口
+        if (url.includes('/chat')) {
+            if (responseData.code === 200 && responseData.data) {
+                console.log('处理成功的聊天接口响应:', responseData.data);
+                
+                // 检查是否包含session_id
+                if (responseData.data.session_id) {
+                    console.log('检测到会话ID:', responseData.data.session_id);
+                } else {
+                    console.warn('响应中缺少会话ID，所有字段:', Object.keys(responseData.data));
+                }
+                
+                // 检查响应内容中是否包含HTML标签
+                const response = responseData.data.response || '';
+                if (response && typeof response === 'string') {
+                    const hasHtml = response.includes('<') && response.includes('>');
+                    console.log(`响应长度: ${response.length}, 是否包含HTML: ${hasHtml}`);
+                    
+                    if (hasHtml) {
+                        console.log('HTML响应片段:', response.substring(0, 100) + '...');
+                    }
+                }
+                
+                success(responseData.data);
+                return;
+            } else if (responseData.code !== 200 && responseData.data) {
+                console.warn('处理失败的聊天接口响应:', responseData.data);
+                ElMessage.warning(responseData.message || '请求处理失败');
+                success(responseData.data); // 仍然传递data以便UI恢复
+                return;
+            }
         }
-        else if (data.code >= 40000){
-            console.warn(`请求地址：${url}，状态码：${data.code}，错误信息：${data.message}`)
-            ElMessage.warning(data.data.detail)
+
+        // 常规处理
+        if(responseData.code === 200){
+            // 服务器处理成功
+            if (responseData.data) {
+                console.log('成功响应有data字段:', responseData.data);
+                success(responseData.data);
+            } else {
+                console.log('成功响应无data字段，返回完整响应');
+                success(responseData);
+            }
+        } else {
+            // 服务器处理失败但返回了响应
+            console.warn(`请求地址：${url}，状态码：${responseData.code}，错误信息：${responseData.message}`);
+            
+            // 显示错误消息
+            const errorMessage = responseData.message || '请求处理失败';
+            ElMessage.warning(errorMessage);
+            
+            // 调用回调以便UI恢复
+            success({ error: true, message: errorMessage });
         }
     }).catch(err => {  // 连接失败
-        console.warn(err)
-        ElMessage.warning('发生了一些错误，请联系管理员')
-    })
+        console.warn(`请求失败: ${url}`, err);
+        ElMessage.warning('发生了一些错误，请稍后重试');
+        
+        // 传入错误信息作为响应，以便UI恢复
+        success({
+            error: true,
+            message: '网络连接失败，请检查网络并稍后重试'
+        });
+    });
 }
 
 // 封装不需要 token 的 GET 请求和 POST 请求

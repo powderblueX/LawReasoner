@@ -7,15 +7,25 @@ import logging
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
+import pathlib
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("db_utils")
 
 # 数据库配置
-# 优先从环境变量读取
-DB_PATH = os.environ.get("DATABASE_PATH", "./common_db/shared_db.db")
+# 获取项目根目录的绝对路径
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+# 数据库文件路径
+DB_PATH = os.path.join(BASE_DIR, "shared_db.db")
 SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
+
+# 确保数据库目录存在
+os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+
+# 输出数据库路径信息
+logger.info(f"使用数据库文件: {DB_PATH}")
+logger.info(f"数据库连接URL: {SQLALCHEMY_DATABASE_URL}")
 
 # 创建数据库引擎
 engine = create_engine(

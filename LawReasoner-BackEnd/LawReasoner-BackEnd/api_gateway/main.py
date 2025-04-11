@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi import Request
 
 from app.api.routes import api_router # 主路由文件
 from app.core.config import settings # 系统配置
@@ -8,6 +11,8 @@ from app.core.config import settings # 系统配置
 # 调试信息
 print("===== API网关启动 =====")
 print(f"认证服务URL: {settings.AUTH_SERVICE_URL}")
+print(f"个人资料服务URL: {settings.PROFILE_SERVICE_URL}")
+print(f"推理服务URL: {settings.REASONING_SERVICE_URL}")
 print(f"CORS配置: {settings.BACKEND_CORS_ORIGINS}")
 
 # ------------------------- FastAPI应用初始化 -------------------------
@@ -32,18 +37,48 @@ app.add_middleware(
     allow_credentials=True, # 允许携带Cookie
     allow_methods=["*"], # 允许所有HTTP方法
     allow_headers=["*"], # 允许所有请求头
+    expose_headers=["*"], # 允许前端访问的响应头
+    max_age=86400, # 预检请求缓存时间（秒）
 )
 """
 CORS策略说明：
 1. allow_origins: 生产环境应严格指定前端地址（如["https://your-domain.com"]）
 2. allow_credentials: 为True时前端才能接收Set-Cookie
-3. TODO: 开发环境可用通配符"*"，但生产环境必须限制
+3. expose_headers: 允许前端访问的响应头部
+4. max_age: 预检请求缓存时间，降低OPTIONS请求次数
 """
+
+# 自定义OPTIONS预检请求处理器
+@app.options("/{full_path:path}")
+async def options_handler(request: Request, full_path: str):
+    """处理所有OPTIONS预检请求，返回正确的CORS头"""
+    response = JSONResponse(content={"detail": "OK"})
+    
+    # 设置CORS响应头
+    origin = request.headers.get("origin", "")
+    
+    if origin:
+        if "*" in settings.BACKEND_CORS_ORIGINS:
+            response.headers["Access-Control-Allow-Origin"] = "*"
+        elif origin in settings.BACKEND_CORS_ORIGINS:
+            response.headers["Access-Control-Allow-Origin"] = origin
+        elif settings.BACKEND_CORS_ORIGINS:
+            # 默认使用第一个配置的源
+            response.headers["Access-Control-Allow-Origin"] = settings.BACKEND_CORS_ORIGINS[0]
+    
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    response.headers["Access-Control-Max-Age"] = "86400"
+    
+    return response
 
 # ------------------------- 路由注册 -------------------------
 app.include_router(api_router, prefix=settings.API_V1_STR)
 print(f"API路由注册完成，前缀: {settings.API_V1_STR}")
 print(f"认证转发路由: {settings.API_V1_STR}/auth/*")
+print(f"资料转发路由: {settings.API_V1_STR}/profile/*")
+print(f"推理转发路由: {settings.API_V1_STR}/reasoning/*")
 """
 路由挂载说明：
 - api_router: 来自routes.py的所有路由
