@@ -38,6 +38,12 @@ uvicorn main:app --reload --port 8002
 # 启动知识库服务
 cd knowledge_service
 uvicorn main:app --reload --port 8003
+
+# 启动文件系统服务
+live-server --middleware=(绝对路径)cors-middleware.js --port=5500
+
+# ngrok
+ngrok start --all --config ngrok.yml
 ```
 
 ## 部署

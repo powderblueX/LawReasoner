@@ -8,6 +8,8 @@ import axios from "axios";
 import {validateCode, validateEmail, validatePassword, validateUsername} from "@/validate/index.js";
 import BackToHome from '@/components/BackToHome.vue';
 
+const BASE_URL = "http://localhost:8000"
+
 const formRef = ref()
 const form = reactive({
   username: '',
@@ -74,11 +76,12 @@ function askForCode() {
     }, 1000)
     
     // 发送请求
-    axios.post('/api/v1/register/send-code', {
+    axios.post(`${BASE_URL}/api/v1/register/send-code`, {
       email: form.email
     }, {
       headers: {
-        'Content-Type': 'application/json'
+        "content-type": "application/json",
+        "ngrok-skip-browser-warning": "true"
       }
     }).then(({data}) => {
       if (data.code === 200){
@@ -121,11 +124,16 @@ onBeforeUnmount(() => {
 function register() {
   formRef.value.validate((valid) => {
     if(valid){
-      axios.post('/api/v1/register', {
+      axios.post(`${BASE_URL}/api/v1/register`, {
         username: form.username,
         password: form.password,
         email: form.email,
         verification_code: form.verification_code
+      }, {
+        headers: {
+          "content-type": "application/json",
+          "ngrok-skip-browser-warning": "true"
+        }
       }).then(({data}) => {
         if (data.code === 200){
           ElMessage.success('注册成功，请尝试登录')
@@ -133,7 +141,7 @@ function register() {
         }
         else {
           console.warn(`请求地址：/api/v1/register，状态码：${data.code}，错误信息：${data.message}`)
-          ElMessage.warning(data.data.detail)
+          ElMessage.warning(data.message)
         }
       }).catch(err => {
         console.warn(err)
@@ -143,6 +151,31 @@ function register() {
     else{
       ElMessage.warning('请完善表单内容')
     }
+  })
+}
+
+function sendCode() {
+  if (!form.email) {
+    ElMessage.warning('请输入邮箱')
+    return
+  }
+  axios.post(`${BASE_URL}/api/v1/register/send-code`, {
+    email: form.email
+  }, {
+    headers: {
+      "content-type": "application/json",
+      "ngrok-skip-browser-warning": "true"
+    }
+  }).then(({data}) => {
+    if (data.code === 200) {
+      ElMessage.success('验证码已发送')
+      countdown()
+    } else {
+      ElMessage.warning(data.message)
+    }
+  }).catch(err => {
+    console.warn(err)
+    ElMessage.warning('发送验证码失败')
   })
 }
 

@@ -1,0 +1,9 @@
+version: "1"
+authtoken: 2uUa0aQx21A6gO2kcyAAQar7DYN_2Yh3XNPkmoRoN1qTquBgQ
+tunnels:
+  fileSystem:
+    proto: http
+    addr: 5500
+  contract:
+    proto: http
+    addr: 8000
