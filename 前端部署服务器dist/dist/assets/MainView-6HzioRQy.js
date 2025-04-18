@@ -1,0 +1,1 @@
+import{_ as r,c,a as e,w as n,r as s,o,T as i,b as l,d as _}from"./index-DM3R47Z4.js";const d={};function m(u,f){const a=s("router-view");return o(),c("div",null,[e(a,null,{default:n(({Component:t})=>[e(i,{name:"el-fade-in-linear",mode:"out-in"},{default:n(()=>[(o(),l(_(t)))]),_:2},1024)]),_:1})])}const v=r(d,[["render",m]]);export{v as default};
