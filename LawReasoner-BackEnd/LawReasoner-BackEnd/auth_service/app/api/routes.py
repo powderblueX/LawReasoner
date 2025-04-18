@@ -22,7 +22,7 @@ from app.utils.email import send_verification_code
 api_router = APIRouter()
 
 
-@api_router.post("/login", 
+@api_router.post("/auth/login", 
                  summary="用户登录",
                  description="通过用户名或邮箱和密码获取访问令牌",
                  response_model=dict)
@@ -41,9 +41,8 @@ async def login_for_access_token(
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
         return {
-            "code": 40100,  # 自定义错误代码，对应401状态
-            "message": "invalid_credentials",
-            "data": {"detail": "用户名/邮箱或密码不正确"}
+            "code": 401, 
+            "message": "用户名/邮箱或密码不正确"
         }
     
     print(f"用户验证成功: {user.username}, ID: {user.id}")
@@ -84,7 +83,7 @@ async def login_for_access_token(
     }
 
 
-@api_router.post("/oauth-login", 
+@api_router.post("/auth/oauth-login", 
                  summary="OAuth2表单登录",
                  description="支持OAuth2标准表单登录")
 async def oauth_login(
@@ -97,9 +96,8 @@ async def oauth_login(
     if not user:
         # 使用统一的错误响应格式
         return {
-            "code": 40100,
-            "message": "invalid_credentials",
-            "data": {"detail": "用户名/邮箱或密码不正确"}
+            "code": 401,
+            "message": "用户名/邮箱或密码不正确"
         }
     
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -130,7 +128,7 @@ async def oauth_login(
     }
 
 
-@api_router.post("/register/send-code",
+@api_router.post("/auth/register/send-code",
                  summary="发送注册验证码",
                  description="向指定邮箱发送注册验证码")
 async def send_register_code(
@@ -147,9 +145,8 @@ async def send_register_code(
     if user:
         # 使用统一的错误响应格式
         return {
-            "code": 40010,
-            "message": "email_already_registered",
-            "data": {"detail": "该邮箱已被注册"}
+            "code": 409,
+            "message": "该邮箱已被注册"
         }
     
     # 发送验证码
@@ -157,19 +154,17 @@ async def send_register_code(
     if not success:
         # 使用统一的错误响应格式
         return {
-            "code": 50000,
-            "message": "email_send_failed",
-            "data": {"detail": "验证码发送失败，请稍后重试"}
+            "code": 503,
+            "message": "验证码发送失败，请稍后重试"
         }
     
     return {
         "code": 200,
-        "message": "success",
-        "data": {"message": "验证码已发送至邮箱，有效期为10分钟"}
+        "message": "验证码已发送至邮箱，有效期为10分钟"
     }
 
 
-@api_router.post("/register", 
+@api_router.post("/auth/register", 
                  summary="用户注册",
                  description="通过邮箱验证码注册新用户")
 async def register_user(
@@ -188,9 +183,8 @@ async def register_user(
     if existing_user:
         # 使用统一的错误响应格式
         return {
-            "code": 40010,
-            "message": "email_already_registered",
-            "data": {"detail": "该邮箱已被注册"}
+            "code": 409,
+            "message": "该邮箱已被注册"
         }
     
     # 检查用户名是否已存在
@@ -198,9 +192,8 @@ async def register_user(
     if existing_username:
         # 使用统一的错误响应格式
         return {
-            "code": 40011,
-            "message": "username_already_exists",
-            "data": {"detail": "该用户名已被使用"}
+            "code": 409,
+            "message": "该用户名已被使用"
         }
     
     # 创建用户（包含验证码验证）
@@ -208,9 +201,8 @@ async def register_user(
     if not user:
         # 使用统一的错误响应格式
         return {
-            "code": 40020,
-            "message": "verification_code_invalid",
-            "data": {"detail": "验证码无效或已过期"}
+            "code": 403,
+            "message": "验证码无效或已过期，请重新获取"
         }
     
     # 转换用户对象为API响应格式
@@ -224,12 +216,12 @@ async def register_user(
     
     return {
         "code": 200,
-        "message": "success",
+        "message": "用户注册成功",
         "data": user_data
     }
 
 
-@api_router.post("/reset-password/send-code",
+@api_router.post("/auth/reset-password/send-code",
                 summary="发送密码重置验证码",
                 description="向指定邮箱发送密码重置验证码")
 async def send_reset_password_code(
@@ -246,9 +238,8 @@ async def send_reset_password_code(
     if not user:
         # 使用统一的错误响应格式
         return {
-            "code": 40400,
-            "message": "email_not_found",
-            "data": {"detail": "该邮箱未注册"}
+            "code": 404,
+            "message": "该邮箱未注册"
         }
     
     # 发送验证码
@@ -256,19 +247,17 @@ async def send_reset_password_code(
     if not success:
         # 使用统一的错误响应格式
         return {
-            "code": 50000,
-            "message": "email_send_failed",
-            "data": {"detail": "验证码发送失败，请稍后重试"}
+            "code": 503,
+            "message": "验证码发送失败，请稍后重试"
         }
     
     return {
         "code": 200,
-        "message": "success",
-        "data": {"message": "验证码已发送至邮箱，有效期为10分钟"}
+        "message": "验证码已发送至邮箱，有效期为10分钟"
     }
 
 
-@api_router.post("/reset-password",
+@api_router.post("/auth/reset-password",
                 summary="重置密码",
                 description="通过邮箱验证码重置密码")
 async def reset_user_password(
@@ -285,19 +274,17 @@ async def reset_user_password(
     if not user:
         # 使用统一的错误响应格式
         return {
-            "code": 40020,
-            "message": "verification_failed",
-            "data": {"detail": "验证码无效或已过期，或邮箱不存在"}
+            "code": 400,
+            "message": "密码重置失败，请确认信息正确后重试"
         }
     
     return {
         "code": 200,
-        "message": "success",
-        "data": {"message": "密码重置成功，请使用新密码登录"}
+        "message": "密码重置成功，请使用新密码登录"
     }
 
 
-@api_router.get("/users/me")
+@api_router.get("/auth/users/me")
 async def read_users_me(
     current_user: UserModel = Depends(deps.get_current_user)
 ):
@@ -318,6 +305,6 @@ async def read_users_me(
     
     return {
         "code": 200,
-        "message": "success",
+        "message": "用户个人信息获取成功",
         "data": user_data
     } 

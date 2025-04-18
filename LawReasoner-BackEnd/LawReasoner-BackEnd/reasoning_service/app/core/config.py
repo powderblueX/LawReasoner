@@ -18,7 +18,12 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8  # 8天
     
     # CORS配置
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = ["http://localhost:5173"]
+    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
+        "http://122.51.69.223",
+        "http://47.117.153.17",
+        "http://localhost:3000",
+        "http://localhost:8080",
+    ]
     
     # 验证CORS配置
     @validator("BACKEND_CORS_ORIGINS", pre=True)
@@ -30,7 +35,7 @@ class Settings(BaseSettings):
         raise ValueError(v)
     
     # 数据库配置
-    DATABASE_URL: str = "sqlite:///../common_db/shared_db.db"  # 使用共享数据库
+    DATABASE_URL: str = "sqlite:////home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/common_db/shared_db.db"  # 使用共享数据库
     
     # 模型配置
     USE_LOCAL_MODEL: bool = os.environ.get("USE_LOCAL_MODEL", "False").lower() in ("true", "1", "t")

@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     # 访问令牌有效期（单位：分钟）
 
     # >>>>>>>>>>>>>>> 跨域配置 <<<<<<<<<<<<<<<<
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = ["http://localhost:5173"]
+    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = ["http://122.51.69.223"]
     # 允许跨域请求的来源列表
     # 类型：AnyHttpUrl 确保必须是合法的 HTTP/HTTPS URL
     # TODO:部署后需改为前端域名

@@ -98,14 +98,29 @@ def clean_json(raw_json):
         return None
 
 def clean_contract(docx):
+    """
+    清理合同中的多余符号，保持格式
+    
+    Args:
+        docx: Document对象
+        
+    Returns:
+        清理后的Document对象
+    """
+    # 清理段落中的占位符标记
     for paragraph in docx.paragraphs:
-        # 使用正则表达式匹配大括号及其中的内容，并替换为空字符串
+        # 使用正则表达式匹配剩余的空占位符标记
         for run in paragraph.runs:
-            run.text = re.sub(r'\{.*?\}', '', run.text)
-        # 设置段落对齐方式为向左对齐
-        paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+            # 移除空的占位符标记 {xxxx}
+            run.text = re.sub(r'\{\s*\}', '', run.text)
+            
+        # 设置段落对齐方式为向左对齐（如果有明显格式问题）
+        # 仅在段落没有明确设置对齐方式时使用
+        if paragraph.alignment is None:
+            paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
     
     return docx
+
 def extract_ph(text,ph_json):
     # 从text中提取占位符对应的信息
     #return json格式
@@ -171,71 +186,103 @@ def extract_keywords(text):
 
     return clean_text(response_text)
 
-def fill_template_to_bytes(template_docx, ph_json):
-    # 把占位符对应的信息填入模版的占位符，并返回字节流
-    print(f"开始填充模板，占位符数据: {ph_json}")
+def fill_template(template_docx, ph_json):
+    """
+    把占位符对应的信息填入模版的占位符，并保持原始格式
+    
+    Args:
+        template_docx: Document对象，加载的docx模板
+        ph_json: 字典，包含占位符名称和对应的值
+        
+    Returns:
+        填充后的Document对象
+    """
     
     # 首先收集所有需要替换的占位符
     all_placeholders = {f"{{{key}}}": value for key, value in ph_json.items()}
-    print(f"所有需要替换的占位符: {all_placeholders}")
     
     # 遍历文档中的所有段落
     for paragraph in template_docx.paragraphs:
-        # 先检查整个段落中是否包含占位符
-        paragraph_text = paragraph.text
-        if any(ph in paragraph_text for ph in all_placeholders.keys()):
-            print(f"在段落中发现占位符: {paragraph_text}")
-            
-            # 保存原始格式
-            original_style = paragraph.style
-            
-            # 清空原有runs
-            paragraph.clear()
-            
-            # 按占位符分割文本
-            parts = []
-            current_text = paragraph_text
-            
-            # 找到所有占位符的位置
-            placeholder_positions = []
-            for ph in all_placeholders.keys():
-                start = 0
-                while True:
-                    pos = current_text.find(ph, start)
-                    if pos == -1:
-                        break
-                    placeholder_positions.append((pos, pos + len(ph), ph))
-                    start = pos + len(ph)
-            
-            # 按位置排序
-            placeholder_positions.sort()
-            
-            # 分割文本
-            last_pos = 0
-            for start, end, ph in placeholder_positions:
-                if start > last_pos:
-                    parts.append(current_text[last_pos:start])
-                parts.append(all_placeholders[ph] if all_placeholders[ph] != "没有内容" else "    ")
-                last_pos = end
-            
-            if last_pos < len(current_text):
-                parts.append(current_text[last_pos:])
-            
-            # 添加新的runs
-            for text in parts:
-                run = paragraph.add_run(text)
-                # 保持原有格式
-                run.font.name = original_style.font.name
-                run.font.size = original_style.font.size
+        # 存储所有runs的文本内容，以便后续处理
+        runs_text = []
+        for run in paragraph.runs:
+            runs_text.append(run.text)
+        
+        # 检查段落中是否包含占位符
+        paragraph_has_placeholder = False
+        for ph in all_placeholders.keys():
+            if any(ph in run_text for run_text in runs_text):
+                paragraph_has_placeholder = True
+                break
+                
+        if paragraph_has_placeholder:            
+            # 使用run级别替换，保留格式
+            for i, run in enumerate(paragraph.runs):
+                # 检查当前run是否包含占位符
+                original_text = run.text
+                modified_text = original_text
+                
+                # 替换所有匹配的占位符
+                for ph, value in all_placeholders.items():
+                    if ph in modified_text:
+                        # 使用空格替代"没有内容"
+                        replacement = "    " if value == "没有内容" else value
+                        modified_text = modified_text.replace(ph, replacement)
+                
+                # 只有当文本发生变化时才更新
+                if modified_text != original_text:
+                    run.text = modified_text
     
     # 再次检查是否还有未替换的占位符
     for paragraph in template_docx.paragraphs:
         for run in paragraph.runs:
             if '{' in run.text and '}' in run.text:
-                print(f"警告：发现未替换的占位符: {run.text}")
-                
+                pattern = r'\{[^{}]+\}'  # 匹配{xxx}格式
+                matches = re.findall(pattern, run.text)
+                if matches:
+                    print(f"警告：发现未替换的占位符: {matches}")
+    
+    # 检查表格中的占位符
+    for table in template_docx.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                for paragraph in cell.paragraphs:
+                    # 存储所有runs的文本内容
+                    runs_text = []
+                    for run in paragraph.runs:
+                        runs_text.append(run.text)
+                    
+                    # 检查段落中是否包含占位符
+                    paragraph_has_placeholder = False
+                    for ph in all_placeholders.keys():
+                        if any(ph in run_text for run_text in runs_text):
+                            paragraph_has_placeholder = True
+                            break
+                            
+                    if paragraph_has_placeholder:
+                        print(f"在表格单元格段落中发现占位符: {paragraph.text}")
+                        
+                        # 使用run级别替换，保留格式
+                        for i, run in enumerate(paragraph.runs):
+                            # 检查当前run是否包含占位符
+                            original_text = run.text
+                            modified_text = original_text
+                            
+                            # 替换所有匹配的占位符
+                            for ph, value in all_placeholders.items():
+                                if ph in modified_text:
+                                    # 使用空格替代"没有内容"
+                                    replacement = "    " if value == "没有内容" else value
+                                    modified_text = modified_text.replace(ph, replacement)
+                            
+                            # 只有当文本发生变化时才更新
+                            if modified_text != original_text:
+                                run.text = modified_text
+    
+    # 清理空白行和多余符号
     template_docx = clean_contract(template_docx)
-    return template_to_bytes(template_docx)
+    
+    return template_docx
 
 def template_to_bytes(template_docx):
     # 将文档保存到内存中的字节流
@@ -397,6 +444,52 @@ def process_contract_templates(input_folder, output_folder):
         except Exception as e:
             print(f"处理文件 {file_name} 时出错: {e}")
             continue
+
+def clean_expired_contracts(base_dir, minutes=10):
+    """
+    清理生成的合同文件
+    
+    参数:
+    - base_dir: 基础目录路径
+    - minutes: 文件保留时间（分钟）
+    """
+    import os
+    import time
+    import datetime
+    
+    # 生成合同文件的存储目录
+    generated_dir = os.path.join(base_dir, "contracts", "generated")
+    
+    # 如果目录不存在，则直接返回
+    if not os.path.exists(generated_dir):
+        print(f"目录 {generated_dir} 不存在，无需清理")
+        return
+    
+    # 获取当前时间
+    current_time = time.time()
+    # 转换为分钟
+    minutes_in_seconds = minutes * 60
+    
+    # 清理时间早于指定分钟数的文件
+    deleted_count = 0
+    for filename in os.listdir(generated_dir):
+        if filename.startswith("generated_") and filename.endswith(".docx"):
+            file_path = os.path.join(generated_dir, filename)
+            
+            # 获取文件的修改时间
+            file_mod_time = os.path.getmtime(file_path)
+            
+            # 如果文件修改时间早于指定分钟数，则删除
+            if current_time - file_mod_time > minutes_in_seconds:
+                try:
+                    os.remove(file_path)
+                    deleted_count += 1
+                    print(f"已删除过期合同文件: {filename}")
+                except Exception as e:
+                    print(f"删除文件 {filename} 失败: {str(e)}")
+    
+    print(f"合同文件清理完成，共删除 {deleted_count} 个过期文件")
+    return deleted_count
 
 if __name__ == "__main__":
     input_folder = "contracts/地方"

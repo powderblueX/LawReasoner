@@ -1,9 +1,11 @@
-from typing import List
+from typing import List, Dict
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 import logging
 from datetime import datetime
+import asyncio
+import hashlib
 
 from app.db.session import get_db
 from app.api.deps import get_current_user_id
@@ -22,6 +24,14 @@ router = APIRouter()
 logger = logging.getLogger("chat_api")
 logger.setLevel(logging.INFO)
 
+# 活跃请求缓存
+active_requests = {}
+active_requests_lock = asyncio.Lock()
+
+# 用户请求计数器，用于节流
+user_request_counters = {}
+user_request_lock = asyncio.Lock()
+
 # 后台任务：更新消息的回复
 async def process_model_response(db: Session, message_id: int, user_input: str):
     """处理模型响应并更新数据库"""
@@ -38,6 +48,12 @@ async def process_model_response(db: Session, message_id: int, user_input: str):
         error_message = f"生成回复时发生错误: {str(e)}"
         update_chat_message_response(db, message_id, error_message)
 
+# 生成请求指纹，用于去重
+def generate_request_fingerprint(user_id: int, content: str) -> str:
+    """根据用户ID和请求内容生成唯一请求指纹"""
+    content_hash = hashlib.md5(content.encode('utf-8')).hexdigest()
+    return f"{user_id}:{content_hash}"
+
 @router.post("/chat", status_code=status.HTTP_200_OK)
 async def send_message(
     request: ChatRequest,
@@ -50,7 +66,16 @@ async def send_message(
     
     将消息存储到数据库，同时在后台处理模型响应
     """
-    logger.info(f"用户 {current_user_id} 发送消息: {request.content[:50]}...")
+    # 生成请求指纹
+    request_fingerprint = generate_request_fingerprint(current_user_id, request.content)
+    logger.info(f"用户 {current_user_id} 发送消息: {request.content[:50]}..., 指纹: {request_fingerprint}")
+    
+    # 检查是否存在相同的请求正在处理中
+    async with active_requests_lock:
+        if request_fingerprint in active_requests:
+            cached_response = active_requests[request_fingerprint]
+            logger.info(f"发现重复请求，返回缓存结果 - 指纹: {request_fingerprint}")
+            return cached_response
     
     try:
         # 创建消息记录，不含响应
@@ -67,10 +92,22 @@ async def send_message(
         
         # 尝试获取模型响应
         try:
+            # 将此请求标记为处理中
+            async with active_requests_lock:
+                # 先添加一个临时响应，表示正在处理
+                active_requests[request_fingerprint] = {
+                    "code": 202,
+                    "message": "请求处理中",
+                    "data": {
+                        "status": "processing",
+                        "session_id": session_id
+                    }
+                }
+            
             # 同步获取响应，而不是在后台任务中处理
-            logger.info("开始请求LLM生成回复...")
+            logger.info(f"开始请求LLM生成回复... 指纹: {request_fingerprint}")
             response = await llm_service.generate_response(request.content)
-            logger.info(f"成功获取模型回复，长度: {len(response)}")
+            logger.info(f"成功获取模型回复，长度: {len(response)}, 指纹: {request_fingerprint}")
             
             # 记录部分响应内容以便调试
             logger.info(f"模型回复内容片段: {response[:100]}...")
@@ -88,9 +125,24 @@ async def send_message(
                     "session_id": session_id  # 确保此字段一定存在
                 }
             }
+            
+            # 更新请求缓存
+            async with active_requests_lock:
+                active_requests[request_fingerprint] = response_obj
+                
+                # 设置清理定时器，10分钟后清理缓存
+                async def cleanup_request():
+                    await asyncio.sleep(600)  # 10分钟
+                    async with active_requests_lock:
+                        if request_fingerprint in active_requests:
+                            del active_requests[request_fingerprint]
+                            logger.info(f"请求缓存已清理 - 指纹: {request_fingerprint}")
+                
+                # 启动清理任务
+                asyncio.create_task(cleanup_request())
+            
             # 打印完整的响应对象，帮助调试
             logger.info(f"返回成功响应，包含session_id: {session_id}")
-            logger.info(f"返回成功响应，结构: {response_obj}")
             return response_obj
             
         except Exception as model_error:
@@ -104,7 +156,7 @@ async def send_message(
             logger.info(f"已更新消息ID {db_message.id} 的错误响应")
             
             # 返回标准格式的错误响应
-            error_response = {
+            error_response_obj = {
                 "code": 500,
                 "message": "模型生成失败",
                 "data": {
@@ -113,14 +165,31 @@ async def send_message(
                     "detail": str(model_error)
                 }
             }
-            logger.info(f"返回错误响应，结构: {error_response}")
-            return error_response
+            
+            # 更新请求缓存
+            async with active_requests_lock:
+                # 保存错误响应，但设置较短的缓存时间
+                active_requests[request_fingerprint] = error_response_obj
+                
+                # 设置清理定时器，1分钟后清理错误缓存
+                async def cleanup_error_request():
+                    await asyncio.sleep(60)  # 1分钟
+                    async with active_requests_lock:
+                        if request_fingerprint in active_requests:
+                            del active_requests[request_fingerprint]
+                            logger.info(f"错误请求缓存已清理 - 指纹: {request_fingerprint}")
+                
+                # 启动清理任务
+                asyncio.create_task(cleanup_error_request())
+            
+            logger.info(f"返回错误响应，结构: {error_response_obj}")
+            return error_response_obj
     
     except Exception as e:
         logger.error(f"处理消息时发生错误: {str(e)}", exc_info=True)
         
         # 返回标准格式的错误响应
-        return {
+        error_obj = {
             "code": 500,
             "message": f"处理消息失败: {str(e)}",
             "data": {
@@ -128,6 +197,8 @@ async def send_message(
                 "detail": str(e)
             }
         }
+        
+        return error_obj
 
 @router.get("/sessions", response_model=ChatSessionList)
 async def get_sessions(
@@ -140,7 +211,7 @@ async def get_sessions(
     try:
         # 获取会话列表
         db_sessions = get_user_chat_sessions(db, current_user_id)
-        
+
         # 转换为响应格式
         sessions = []
         for session in db_sessions:
@@ -162,11 +233,12 @@ async def get_sessions(
     
     except Exception as e:
         logger.error(f"获取会话列表时发生错误: {str(e)}")
-        # 同样返回ChatSessionList对象
+        # 修复：确保正确初始化ChatSessionList对象
         return ChatSessionList(
             code=500,
             message=f"获取会话列表失败: {str(e)}",
-            sessions=[]  # 始终返回空列表而不是null
+            sessions=[],  # 始终返回空列表而不是null
+            data={"error": str(e)}  # 添加data字段
         )
 
 @router.get("/sessions/{session_id}/messages", response_model=ChatHistory)
@@ -186,7 +258,7 @@ async def get_session_messages(
             return ChatHistory(
                 code=404,
                 message="会话不存在或无权访问",
-                data=None,
+                data={"error": "Not found or no permission"},
                 messages=[]  # 返回空列表而不是null
             )
         
@@ -208,12 +280,13 @@ async def get_session_messages(
     
     except Exception as e:
         logger.error(f"获取会话消息时发生错误: {str(e)}")
+        print(f"获取会话消息时发生错误: {str(e)}")
         # 使用标准响应格式而不是HTTP异常
         # 关键：确保返回的结构与ChatHistory模型一致，即使有错误也包含messages字段
         return ChatHistory(
             code=500,
             message=f"获取会话消息失败: {str(e)}",
-            data=None,
+            data={"error": str(e)},
             messages=[]  # 始终返回空列表而不是null
         )
 

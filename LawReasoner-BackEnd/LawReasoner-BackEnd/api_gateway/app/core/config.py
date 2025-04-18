@@ -37,7 +37,7 @@ class Settings(BaseSettings):
 
 
     # >>>>>>>>>>>>>>> CORS跨域配置 <<<<<<<<<<<<<<<<
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
+    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = ["http://122.51.69.223", "http://47.117.153.17"]
     # 允许的跨域请求来源列表
     # 类型：AnyHttpUrl确保必须是合法URL格式
     # 示例：["http://localhost:3000", "https://your-frontend.com"]
@@ -64,13 +64,13 @@ class Settings(BaseSettings):
     # 认证服务地址（开发环境默认值）
     # Docker Compose中应替换为服务名：http://auth_service:8001
 
-    REASONING_SERVICE_URL: str = "http://localhost:8002"
+    REASONING_SERVICE_URL: str = "http://localhost:8004"
     # 推理服务地址
 
-    KNOWLEDGE_SERVICE_URL: str = "http://localhost:8003"
+    PROFILE_SERVICE_URL: str = "http://localhost:8002"
     # 知识库服务地址
 
-    CONTRACT_SERVICE_URL: str = "http://localhost:8004"
+    CONTRACT_SERVICE_URL: str = "http://localhost:8003"
     
 
     class Config:

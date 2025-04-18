@@ -1,0 +1,1196 @@
+INFO:     Will watch for changes in these directories: ['/home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service']
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     Started reloader process [97482] using StatReload
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-15 03:20:40,341 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-15 03:20:40,342 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-15 03:20:40,342 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-15 03:20:40,343 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [97488]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+尝试验证用户: xyy
+2025-04-15 03:21:01,185 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-15 03:21:01,188 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2025-04-15 03:21:01,188 INFO sqlalchemy.engine.Engine [generated in 0.00041s] ('xyy', 1, 0)
+INFO:sqlalchemy.engine.Engine:[generated in 0.00041s] ('xyy', 1, 0)
+用户验证成功: xyy, ID: 2
+生成令牌成功，过期时间: 1745320861.482191
+INFO:     111.187.58.13:0 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
+2025-04-15 03:21:01,484 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:     127.0.0.1:58142 - "GET /api/v1/contract/getAllName HTTP/1.1" 404 Not Found
+INFO:     195.178.110.164:0 - "GET /auth/.git/config HTTP/1.0" 404 Not Found
+尝试验证用户: xyy
+2025-04-16 01:38:22,909 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-16 01:38:22,910 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2025-04-16 01:38:22,910 INFO sqlalchemy.engine.Engine [cached since 8.024e+04s ago] ('xyy', 1, 0)
+INFO:sqlalchemy.engine.Engine:[cached since 8.024e+04s ago] ('xyy', 1, 0)
+用户验证成功: xyy, ID: 2
+生成令牌成功，过期时间: 1745401103.182835
+INFO:     111.187.101.193:0 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
+2025-04-16 01:38:23,184 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [97488]
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:32:11,354 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:32:11,355 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:32:11,356 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:32:11,357 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208224]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+尝试验证用户: 123
+2025-04-17 01:33:03,566 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:33:03,570 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2025-04-17 01:33:03,570 INFO sqlalchemy.engine.Engine [generated in 0.00040s] ('123', 1, 0)
+INFO:sqlalchemy.engine.Engine:[generated in 0.00040s] ('123', 1, 0)
+2025-04-17 01:33:03,573 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+2025-04-17 01:33:03,573 INFO sqlalchemy.engine.Engine [generated in 0.00037s] ('123', 1, 0)
+INFO:sqlalchemy.engine.Engine:[generated in 0.00037s] ('123', 1, 0)
+INFO:     111.187.58.13:0 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
+2025-04-17 01:33:03,577 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208224]
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:33:26,610 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:33:26,611 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:33:26,611 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:33:26,612 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208232]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208232]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:34:32,252 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:34:32,252 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:34:32,252 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:34:32,253 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208260]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208260]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:34:47,754 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:34:47,756 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:34:47,756 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:34:47,758 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208266]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208266]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:34:51,814 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:34:51,814 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:34:51,815 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:34:51,816 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208270]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208270]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:34:55,146 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:34:55,147 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:34:55,147 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:34:55,148 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208271]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208271]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:35:37,556 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:35:37,557 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:35:37,558 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:35:37,559 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208278]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208278]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:35:52,247 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:35:52,248 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:35:52,248 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:35:52,249 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208288]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208288]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:36:14,976 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:36:14,977 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:36:14,978 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:36:14,979 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208291]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208291]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:36:44,337 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:36:44,338 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:36:44,339 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:36:44,341 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208294]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208294]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:36:51,322 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:36:51,322 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:36:51,322 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:36:51,324 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208300]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208300]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:37:05,331 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:37:05,331 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:37:05,332 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:37:05,333 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208306]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208306]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:37:29,873 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:37:29,877 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:37:29,877 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:37:29,879 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208316]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208316]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:37:50,403 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:37:50,404 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:37:50,404 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:37:50,406 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208326]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208326]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:38:01,543 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:38:01,544 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:38:01,544 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:38:01,547 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208329]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208329]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:38:06,494 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:38:06,494 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:38:06,495 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:38:06,496 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208332]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208332]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:38:17,693 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:38:17,694 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:38:17,694 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:38:17,695 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208333]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208333]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:38:32,672 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:38:32,673 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:38:32,673 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:38:32,674 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208337]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208337]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:39:04,268 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:39:04,269 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:39:04,269 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:39:04,271 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208343]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208343]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:39:26,819 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:39:26,819 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:39:26,819 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:39:26,821 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208344]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208344]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:39:28,846 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:39:28,847 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:39:28,847 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:39:28,848 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208345]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+2025-04-17 01:43:34,159 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:43:34,163 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+2025-04-17 01:43:34,163 INFO sqlalchemy.engine.Engine [generated in 0.00051s] ('mishijibai@163.com', 1, 0)
+INFO:sqlalchemy.engine.Engine:[generated in 0.00051s] ('mishijibai@163.com', 1, 0)
+INFO:     111.187.58.13:0 - "POST /api/v1/auth/register/send-code HTTP/1.1" 200 OK
+2025-04-17 01:43:34,167 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+2025-04-17 01:43:50,938 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:43:50,940 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+2025-04-17 01:43:50,940 INFO sqlalchemy.engine.Engine [cached since 16.78s ago] ('mishijibai@163.com', 1, 0)
+INFO:sqlalchemy.engine.Engine:[cached since 16.78s ago] ('mishijibai@163.com', 1, 0)
+INFO:     111.187.58.13:0 - "POST /api/v1/auth/register/send-code HTTP/1.1" 200 OK
+2025-04-17 01:43:50,943 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+2025-04-17 01:46:19,891 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:46:19,892 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+2025-04-17 01:46:19,892 INFO sqlalchemy.engine.Engine [cached since 165.7s ago] ('mishijibai@163.com', 1, 0)
+INFO:sqlalchemy.engine.Engine:[cached since 165.7s ago] ('mishijibai@163.com', 1, 0)
+INFO:     111.187.58.13:0 - "POST /api/v1/auth/register/send-code HTTP/1.1" 200 OK
+2025-04-17 01:46:19,908 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+尝试验证用户: 去
+2025-04-17 01:46:31,773 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:46:31,775 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2025-04-17 01:46:31,775 INFO sqlalchemy.engine.Engine [generated in 0.00042s] ('去', 1, 0)
+INFO:sqlalchemy.engine.Engine:[generated in 0.00042s] ('去', 1, 0)
+2025-04-17 01:46:31,777 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+2025-04-17 01:46:31,777 INFO sqlalchemy.engine.Engine [cached since 177.6s ago] ('去', 1, 0)
+INFO:sqlalchemy.engine.Engine:[cached since 177.6s ago] ('去', 1, 0)
+INFO:     111.187.58.13:0 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
+2025-04-17 01:46:31,780 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+2025-04-17 01:46:48,825 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:46:48,826 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+2025-04-17 01:46:48,827 INFO sqlalchemy.engine.Engine [cached since 194.7s ago] ('mishijibai@163.com', 1, 0)
+INFO:sqlalchemy.engine.Engine:[cached since 194.7s ago] ('mishijibai@163.com', 1, 0)
+✅ 验证码已成功发送至 mishijibai@163.com
+INFO:     111.187.58.13:0 - "POST /api/v1/auth/reset-password/send-code HTTP/1.1" 200 OK
+2025-04-17 01:46:49,830 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208345]
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:47:48,372 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:47:48,373 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:47:48,373 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:47:48,374 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [208973]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+2025-04-17 01:47:53,644 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:47:53,649 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+2025-04-17 01:47:53,649 INFO sqlalchemy.engine.Engine [generated in 0.00042s] ('2784892686@qq.com', 1, 0)
+INFO:sqlalchemy.engine.Engine:[generated in 0.00042s] ('2784892686@qq.com', 1, 0)
+INFO:     111.187.58.13:0 - "POST /api/v1/auth/reset-password/send-code HTTP/1.1" 200 OK
+2025-04-17 01:47:53,653 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [208973]
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:48:04,845 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:48:04,845 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:48:04,845 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:48:04,847 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [209002]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [209002]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:48:15,010 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:48:15,011 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:48:15,011 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:48:15,012 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [209015]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [209015]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:48:40,434 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:48:40,435 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:48:40,435 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:48:40,436 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [209497]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [209497]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:48:45,338 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:48:45,339 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:48:45,339 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:48:45,341 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [209501]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [209501]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:53:57,917 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:53:57,918 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:53:57,918 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:53:57,919 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [211485]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [211485]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:54:00,077 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:54:00,078 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:54:00,078 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:54:00,079 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [211497]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [211497]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 20.00 KB
+2025-04-17 01:54:22,884 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 01:54:22,885 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 01:54:22,885 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 01:54:22,887 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [211523]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+2025-04-17 03:18:08,574 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 03:18:08,580 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+2025-04-17 03:18:08,581 INFO sqlalchemy.engine.Engine [generated in 0.00051s] ('powderblue371@2925.com', 1, 0)
+INFO:sqlalchemy.engine.Engine:[generated in 0.00051s] ('powderblue371@2925.com', 1, 0)
+2025-04-17 03:18:08,583 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2025-04-17 03:18:08,584 INFO sqlalchemy.engine.Engine [generated in 0.00048s] ('xyy', 1, 0)
+INFO:sqlalchemy.engine.Engine:[generated in 0.00048s] ('xyy', 1, 0)
+INFO:     111.187.58.13:0 - "POST /api/v1/auth/register HTTP/1.1" 200 OK
+2025-04-17 03:18:08,587 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [211523]
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 48.00 KB
+2025-04-17 03:22:30,685 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 03:22:30,686 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 03:22:30,686 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 03:22:30,688 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [214383]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214383]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 48.00 KB
+2025-04-17 03:23:13,791 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 03:23:13,792 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 03:23:13,792 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 03:23:13,794 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [214392]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214392]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 48.00 KB
+2025-04-17 03:25:12,436 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 03:25:12,437 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 03:25:12,437 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 03:25:12,439 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [214411]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214411]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 48.00 KB
+2025-04-17 03:25:30,914 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 03:25:30,915 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 03:25:30,915 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 03:25:30,917 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [214417]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214417]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 48.00 KB
+2025-04-17 03:25:39,079 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 03:25:39,080 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 03:25:39,080 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 03:25:39,081 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [214422]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214422]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 48.00 KB
+2025-04-17 03:26:46,624 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 03:26:46,625 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 03:26:46,625 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 03:26:46,629 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [214435]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214435]
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+===== 认证服务启动 =====
+数据库连接: sqlite:///../common_db/shared_db.db
+JWT密钥: simple-sha...
+CORS配置: [AnyHttpUrl('http://122.51.69.223', )]
+数据库文件路径: /home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/auth_service/../common_db/shared_db.db
+数据库文件存在，大小: 48.00 KB
+2025-04-17 03:28:49,740 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 03:28:49,764 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+INFO:sqlalchemy.engine.Engine:PRAGMA main.table_info("users")
+2025-04-17 03:28:49,764 INFO sqlalchemy.engine.Engine [raw sql] ()
+INFO:sqlalchemy.engine.Engine:[raw sql] ()
+2025-04-17 03:28:49,766 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:     Started server process [214453]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+数据库表已更新
+API路由注册完成，前缀: /api/v1
+登录路由: /api/v1/login
+尝试验证用户: xyy
+2025-04-17 04:14:05,387 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 04:14:05,391 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2025-04-17 04:14:05,391 INFO sqlalchemy.engine.Engine [generated in 0.00040s] ('xyy', 1, 0)
+INFO:sqlalchemy.engine.Engine:[generated in 0.00040s] ('xyy', 1, 0)
+用户验证成功: xyy, ID: 2
+生成令牌成功，过期时间: 1745496845.708226
+INFO:     111.187.58.13:0 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
+2025-04-17 04:14:05,711 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+尝试验证用户: Xyy
+2025-04-17 14:07:45,754 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 14:07:45,755 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2025-04-17 14:07:45,755 INFO sqlalchemy.engine.Engine [cached since 3.562e+04s ago] ('Xyy', 1, 0)
+INFO:sqlalchemy.engine.Engine:[cached since 3.562e+04s ago] ('Xyy', 1, 0)
+2025-04-17 14:07:45,757 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+2025-04-17 14:07:45,757 INFO sqlalchemy.engine.Engine [generated in 0.00038s] ('Xyy', 1, 0)
+INFO:sqlalchemy.engine.Engine:[generated in 0.00038s] ('Xyy', 1, 0)
+INFO:     111.187.58.13:0 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
+2025-04-17 14:07:45,760 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+尝试验证用户: xyy
+2025-04-17 14:07:49,937 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-17 14:07:49,938 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2025-04-17 14:07:49,938 INFO sqlalchemy.engine.Engine [cached since 3.562e+04s ago] ('xyy', 1, 0)
+INFO:sqlalchemy.engine.Engine:[cached since 3.562e+04s ago] ('xyy', 1, 0)
+用户验证成功: xyy, ID: 2
+生成令牌成功，过期时间: 1745532470.220143
+INFO:     111.187.58.13:0 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
+2025-04-17 14:07:50,222 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+尝试验证用户: xyy
+2025-04-18 00:02:02,291 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2025-04-18 00:02:02,292 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+INFO:sqlalchemy.engine.Engine:SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.full_name AS users_full_name, users.is_active AS users_is_active, users.is_superuser AS users_is_superuser, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2025-04-18 00:02:02,292 INFO sqlalchemy.engine.Engine [cached since 7.128e+04s ago] ('xyy', 1, 0)
+INFO:sqlalchemy.engine.Engine:[cached since 7.128e+04s ago] ('xyy', 1, 0)
+用户验证成功: xyy, ID: 2
+生成令牌成功，过期时间: 1745568122.579631
+INFO:     111.187.58.13:0 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
+2025-04-18 00:02:02,581 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK

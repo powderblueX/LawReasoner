@@ -33,6 +33,11 @@ services = [
         "process": None
     },
     {
+        "name": "合同服务(contract)",
+        "command": "python contract_service/main.py",
+        "process": None
+    },
+    {
         "name": "推理服务(reasoning)",
         "command": "python reasoning_service/main.py",
         "process": None

@@ -18,11 +18,11 @@ app.add_middleware(
     allow_origins=settings.BACKEND_CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*", "Authorization", "Content-Type","Content-Disposition","ngrok-skip-browser-warning"],
 )
 
 # 包含所有API路由
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8004, reload=True) 
+    uvicorn.run("main:app", host="0.0.0.0", port=8003, reload=True) 

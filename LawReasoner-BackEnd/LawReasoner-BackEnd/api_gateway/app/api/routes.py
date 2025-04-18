@@ -47,7 +47,7 @@ async def auth_proxy(path: str, request: Request):
     """
     async with httpx.AsyncClient() as client:
         # 拼接目标地址，例如：http://auth_service:8001/api/v1/login
-        url = f"{settings.AUTH_SERVICE_URL}/api/v1/{path}"
+        url = f"{settings.AUTH_SERVICE_URL}/api/v1/auth/{path}"
         # 转换FastAPI Request为httpx请求
         headers = dict(request.headers)
         body = await request.body() if request.method in ["POST", "PUT"] else None
@@ -75,7 +75,7 @@ async def reasoning_proxy(path: str, request: Request):
     注意：实际转发前可添加鉴权逻辑（如验证JWT）
     """
     async with httpx.AsyncClient() as client:
-        url = f"{settings.REASONING_SERVICE_URL}/api/v1/{path}"
+        url = f"{settings.REASONING_SERVICE_URL}/api/v1/reasoning/{path}"
         body = await request.body() if request.method in ["POST", "PUT"] else None
         response = await client.request(
             method=request.method,
@@ -91,15 +91,15 @@ async def reasoning_proxy(path: str, request: Request):
 
 
 # 知识库服务代理
-@api_router.api_route("/knowledge/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
-async def knowledge_proxy(path: str, request: Request): 
+@api_router.api_route("/profile/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
+async def profile_proxy(path: str, request: Request): 
     """知识库服务代理
     特点：
         - 支持所有HTTP方法
-        - {path:path}可匹配含斜杠的子路径（如/knowledge/law/articles/123）
+        - {path:path}可匹配含斜杠的子路径（如/profile/law/articles/123）
     """
     async with httpx.AsyncClient() as client:
-        url = f"{settings.KNOWLEDGE_SERVICE_URL}/api/v1/{path}"
+        url = f"{settings.PROFILE_SERVICE_URL}/api/v1/profile/{path}"
         body = await request.body() if request.method in ["POST", "PUT"] else None
         response = await client.request(
             method=request.method,
@@ -121,7 +121,7 @@ async def contract_proxy(path: str, request: Request):
     功能：将/contract开头的请求转发到合同微服务
     """
     async with httpx.AsyncClient() as client:
-        url = f"{settings.CONTRACT_SERVICE_URL}/api/v1/{path}"
+        url = f"{settings.CONTRACT_SERVICE_URL}/api/v1/contract/{path}"
         body = await request.body() if request.method in ["POST", "PUT"] else None
         response = await client.request(
             method=request.method,

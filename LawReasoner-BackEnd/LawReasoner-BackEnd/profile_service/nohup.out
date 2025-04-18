@@ -1,0 +1,171 @@
+INFO:     Will watch for changes in these directories: ['/home/admin/LawReasoner-BackEnd/LawReasoner-BackEnd/profile_service']
+INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
+INFO:     Started reloader process [106094] using StatReload
+INFO:     Started server process [106098]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [106098]
+INFO:     Started server process [212226]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [212226]
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Started server process [212630]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [212630]
+INFO:     Started server process [212633]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [212633]
+INFO:     Started server process [214223]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214223]
+INFO:     Started server process [214237]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214237]
+INFO:     Started server process [214240]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214240]
+INFO:     Started server process [214257]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     111.187.58.13:0 - "POST /api/v1/profile/update HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "POST /api/v1/profile/update HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214257]
+INFO:     Started server process [214271]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214271]
+INFO:     Started server process [214279]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214279]
+INFO:     Started server process [214283]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     111.187.58.13:0 - "POST /api/v1/profile/password HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "POST /api/v1/profile/password HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214283]
+INFO:     Started server process [214297]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     111.187.58.13:0 - "POST /api/v1/profile/update HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "POST /api/v1/profile/update HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214297]
+INFO:     Started server process [214316]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     111.187.58.13:0 - "POST /api/v1/profile/update HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "POST /api/v1/profile/update HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214316]
+INFO:     Started server process [214322]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     111.187.58.13:0 - "POST /api/v1/profile/update HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214322]
+INFO:     Started server process [214477]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214477]
+INFO:     Started server process [214503]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app/api/routes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [214503]
+INFO:     Started server process [214516]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "POST /api/v1/profile/logout HTTP/1.1" 404 Not Found
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "POST /api/v1/profile/logout HTTP/1.1" 404 Not Found
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.101.193:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "POST /api/v1/profile/logout HTTP/1.1" 404 Not Found
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "GET /api/v1/profile/info HTTP/1.1" 200 OK
+INFO:     111.187.58.13:0 - "POST /api/v1/profile/logout HTTP/1.1" 404 Not Found

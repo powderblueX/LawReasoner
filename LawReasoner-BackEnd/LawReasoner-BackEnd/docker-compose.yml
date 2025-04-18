@@ -13,8 +13,9 @@ services:
       - .env
     depends_on:
       - auth_service
+      - profile_service
+      - contract_service
       - reasoning_service
-      - knowledge_service
     networks:
       - law_reasoner_net
 
@@ -32,6 +33,37 @@ services:
     networks:
       - law_reasoner_net
 
+  profile_service:
+    build:
+      context: .
+      dockerfile: ./profile_service/Dockerfile
+    volumes:
+      - ./profile_service:/app
+      - ./data/profile_service_db:/app/data
+    ports:
+      - "8002:8002"
+    env_file:
+      - .env
+    depends_on:
+      - auth_service
+    networks:
+      - law_reasoner_net
+
+  contract_service:
+    build:
+      context: .
+      dockerfile: ./contract_service/Dockerfile
+    volumes:
+      - ./contract_service:/app
+      - ./data/contract_service_db:/app/data
+      - ./contracts:/app/contracts
+    ports:
+      - "8003:8003"
+    env_file:
+      - .env
+    networks:
+      - law_reasoner_net
+
   reasoning_service:
     build:
       context: .
@@ -40,28 +72,12 @@ services:
       - ./reasoning_service:/app
       - ./data/reasoning_service_db:/app/data
     ports:
-      - "8002:8002"
+      - "8004:8004"
     env_file:
       - .env
-    depends_on:
-      - knowledge_service
     networks:
       - law_reasoner_net
 
-  knowledge_service:
-    build:
-      context: .
-      dockerfile: ./knowledge_service/Dockerfile
-    volumes:
-      - ./knowledge_service:/app
-      - ./data/knowledge_service_db:/app/data
-      - ./data/knowledge:/app/data/knowledge
-    ports:
-      - "8003:8003"
-    env_file:
-      - .env
-    networks:
-      - law_reasoner_net
 
 networks:
   law_reasoner_net:
